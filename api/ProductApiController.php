@@ -4,6 +4,7 @@ require_once './api/ApiController.php';
 require_once './Model/CategoriesModel.php';
 require_once './Model/UserModel.php';
 require_once './helper/UserHelper.php';
+require_once './api/jsonView.php';
 
 class ProductApiController extends ApiController {
 
@@ -39,15 +40,19 @@ class ProductApiController extends ApiController {
         }else{
              $this->view->response("No existe un elemento en la tabla con nombre {$ele} o la manera de ordenar es incorrecta", 404);
         }
-}
+    }
 
     public function obtenerProductosPorCategoria($params = []) {
-        $category = $params[':CATEGORY'];
-        $products = $this->modelCategory->getProductsByCategory($category);
-        if(!empty($products)){
-            return $this->view->response($products, 200);
-        }else
-            $this->view->response("No existe la categoria con el nombre {$category}", 404);
+        if((UserHelper::checkSession())){
+            $category = $params[':CATEGORY'];
+            $products = $this->modelCategory->getProductsByCategory($category);
+            if(!empty($products)){
+                return $this->view->response($products, 200);
+            }else
+                $this->view->response("No existe la categoria con el nombre {$category}", 404);
+        } else{
+            $this->view->response("No tienes los permisos para realizar esta accion. Inicia sesion en /start",403);
+        }
     }
 
     public function agregarProducto() {
@@ -67,14 +72,16 @@ class ProductApiController extends ApiController {
                 }else{
                     $this->view->response("La tarea no fue creada porque faltan campos por completar.", 404);
                 }
+            }
+        } else{
+            $this->view->response("No tienes los permisos para realizar esta accion. Inicia sesion en /start",403);
         }
     }
-}
     
 
  
      public function modificarProducto($params = []) {
-        // if((UserHelper::verify())=="administrador"){
+        if((UserHelper::checkSession())){
             $id = $params[':ID'];
             $product = $this->model->getProduct($id);
             $body =$this->getData();
@@ -94,12 +101,11 @@ class ProductApiController extends ApiController {
             } else {
                 $this->view->response("Tarea id= $id not found", 404);
             }
+        } else{
+            $this->view->response("No tienes los permisos para realizar esta accion. Inicia sesion en /start",403);
         }
-        // } else{
-        //     $this->view->response("No tienes los permisos para realizar esta accion.",200);
-        // }
-
-        }
+    }
+}
     
 
 
