@@ -6,6 +6,7 @@ class ApiController{
 
     protected $model;
     protected $modelCategory;
+    protected $modelUser;
     protected $view;
     private $data;
 

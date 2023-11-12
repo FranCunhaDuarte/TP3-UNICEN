@@ -20,7 +20,6 @@ class UserHelper {
     public static function logout() {
         UserHelper::init();
         session_destroy();
-        header('Location: ' . URL_LOGIN);
     }
 
     public static function verify() {

@@ -2,6 +2,8 @@
 require_once './Model/ProductModel.php';
 require_once './api/ApiController.php';
 require_once './Model/CategoriesModel.php';
+require_once './Model/UserModel.php';
+require_once './helper/UserHelper.php';
 
 class ProductApiController extends ApiController {
 
@@ -9,6 +11,7 @@ class ProductApiController extends ApiController {
         parent::__construct();
         $this->model = new ProductModel();
         $this->modelCategory = new CategoriesModel();
+        $this->modelUser = new UserModel();
     }
 
     public function obtenerProductos($params = []) {
@@ -48,7 +51,7 @@ class ProductApiController extends ApiController {
     }
 
     public function agregarProducto() {
-        //if((UserHelper::verify())=="administrador"){
+        if((UserHelper::checkSession())){
             $product = null;  
             $body =$this->getData();
             if(!empty($body)){
@@ -66,6 +69,7 @@ class ProductApiController extends ApiController {
                 }
         }
     }
+}
     
 
  
@@ -73,25 +77,46 @@ class ProductApiController extends ApiController {
         // if((UserHelper::verify())=="administrador"){
             $id = $params[':ID'];
             $product = $this->model->getProduct($id);
+            $body =$this->getData();
             
-            if ($product) {
-                $body =$this->getData();
-                // inserta la tarea
-                $name = $body->name;
-                $description = $body->description;
-                $price = $body->price;
-                $id_category_fk = $body->id_category_fk;
-                $img = $body->img;
-                $product = $this->model->updateProduct($id, $name, $description,$price,$img, $id_category_fk);
-                $this->view->response("Tarea id= $id actualizada con éxito", 200);
+            if ($product && !empty($body)) {
+                if(isset($body->name) && isset($body->description) && isset($body->price) && isset($body->id_category_fk) && isset($body->img)){
+                    $name = $body->name;
+                    $description = $body->description;
+                    $price = $body->price;
+                    $id_category_fk = $body->id_category_fk;
+                    $img = $body->img;
+                    $this->model->updateProduct($id, $name, $description,$price,$img, $id_category_fk);
+                    $this->view->response("Tarea id= $id actualizada con éxito", 200);
+                }else{
+                    $this->view->response("La tarea no fue actualizada porque faltan campos por completar.", 404);
+                }
+            } else {
+                $this->view->response("Tarea id= $id not found", 404);
             }
-            else {
-                $this->view->response("Task id= $id not found", 404);
-            }
+        }
         // } else{
         //     $this->view->response("No tienes los permisos para realizar esta accion.",200);
         // }
-    }
-}
+
+        public function loginIn(){
+            $usuario = $_POST['user'];
+            $password = $_POST['password'];
+            $user = $this->modelUser->getUser($usuario);
+            if(isset($user) && $user != null && password_verify($password, $user->password)){
+                UserHelper::login($user);
+                header('Location: ' . URL_PRODUCT);
+            }else{
+                $error_message = "Nombre de usuario o contraseña incorrectos.";
+                header('Location: ' . URL_LOGIN . '?error=' . urlencode($error_message));
+            }
+        }
+
+        public function showLogin(){
+            require_once './login.phtml';
+        }
+        }
+    
+
 
    
