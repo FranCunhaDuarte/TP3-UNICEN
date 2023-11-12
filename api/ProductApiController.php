@@ -99,22 +99,6 @@ class ProductApiController extends ApiController {
         //     $this->view->response("No tienes los permisos para realizar esta accion.",200);
         // }
 
-        public function loginIn(){
-            $usuario = $_POST['user'];
-            $password = $_POST['password'];
-            $user = $this->modelUser->getUser($usuario);
-            if(isset($user) && $user != null && password_verify($password, $user->password)){
-                UserHelper::login($user);
-                header('Location: ' . URL_PRODUCT);
-            }else{
-                $error_message = "Nombre de usuario o contraseña incorrectos.";
-                header('Location: ' . URL_LOGIN . '?error=' . urlencode($error_message));
-            }
-        }
-
-        public function showLogin(){
-            require_once './login.phtml';
-        }
         }
     
 

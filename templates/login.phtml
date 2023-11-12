@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TecnoMundo Api</title>
+    </head>
+    <body>
+        <?php
+        if(!empty($error)){
+            echo "<h1>$error</h1>";
+        } else {
+            echo "<h1 style= 'color: green;' ></h1>";
+        }
+        ?>
+        <form action="login" method="POST">
+            <label>Usuario</label> 
+            <input type="text" name="user">
+            <label>Contraseña</label>
+            <input type="password" name="password">
+            <button type="submit">Iniciar Sesion</button>
+        </form>
+    </body>
+</html>
