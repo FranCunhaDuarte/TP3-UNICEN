@@ -15,6 +15,18 @@
                return $products;
            }
 
+           public function getCategoryByName($category) {
+               $query = $this->db->prepare("SELECT id_category FROM category WHERE category = ?");
+               $query->execute([$category]);
+               $result = $query->fetch(PDO::FETCH_OBJ);
+               if ($result !== false) {
+                    return $result->id_category;
+                } else {
+                    return null;
+                }
+           }
+           
+
           public function getCategory(){
                $query= $this->db->prepare( "SELECT * FROM category");
                $query->execute();

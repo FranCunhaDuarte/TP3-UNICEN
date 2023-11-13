@@ -1,7 +1,11 @@
 <?php
 require_once './libs/Route.php';
-require_once './api/ProductApiController.php';
-require_once './api/AuthApiController.php';
+require_once './api/controllers/ProductApiController.php';
+// require_once './api/AuthApiController.php';
+
+define("URL_PRODUCT", 'http://'.$_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"].dirname($_SERVER["PHP_SELF"]).'/productos');
+define("URL_LOGIN", 'http://'.$_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"].dirname($_SERVER["PHP_SELF"]).'/login');
+
 
 $router = new Router();
 
@@ -13,7 +17,6 @@ $router->addRoute('/productos/:ID', 'GET', 'ProductApiController', 'obtenerProdu
 $router->addRoute('/productos/:ID', 'PUT', 'ProductApiController', 'modificarProducto');
 $router->addRoute('/productos', 'POST', 'ProductApiController', 'agregarProducto');
 $router->addRoute('/productos/categoria/:CATEGORY', 'GET', 'ProductApiController', 'obtenerProductosPorCategoria');
-$router->addRoute('/productos/:ELEMENTO/:ORDER', 'GET', 'ProductApiController', 'ordenarProduct');
 
 
 

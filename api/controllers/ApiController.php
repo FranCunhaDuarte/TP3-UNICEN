@@ -1,6 +1,6 @@
 <?php
 
-require_once './api/jsonView.php';
+require_once './api/view/jsonView.php';
 
 class ApiController{
 

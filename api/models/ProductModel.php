@@ -23,17 +23,14 @@
             return $product;
         }
 
-  
         public function getProductsOrderBy($elementOrder, $order = 'DESC') {
-
-                $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
-                $query = $this->db->prepare("SELECT product.*, category.* FROM product INNER JOIN category ON (product.id_category_fk = category.id_category) 
-                            ORDER BY $elementOrder $order");
-                $query->execute();
-                $products = $query->fetchAll(PDO::FETCH_OBJ); 
-                return $products; 
-           
-        }
+            $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
+            $query = $this->db->prepare("SELECT product.*, category.* FROM product INNER JOIN category ON (product.id_category_fk = category.id_category) 
+                        ORDER BY $elementOrder $order");
+            $query->execute();
+            $products = $query->fetchAll(PDO::FETCH_OBJ); 
+            return $products; 
+    }
     
 
         function insertProduct($name, $description, $price,$img, $id_category_fk){
