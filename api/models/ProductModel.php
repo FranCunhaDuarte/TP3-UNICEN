@@ -30,7 +30,7 @@
             $query->execute();
             $products = $query->fetchAll(PDO::FETCH_OBJ); 
             return $products; 
-    }
+        }
     
 
         function insertProduct($name, $description, $price,$img, $id_category_fk){

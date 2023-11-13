@@ -37,7 +37,7 @@
    - **Parámetros:**
      - `producto`: Nombre de la columna por la cual se desea ordenar la lista.
      - `order`: Orden de clasificación.
-   - **Descripción:** Permite ordenar la lista de productos por una columna específica (**id_product', 'name', 'description', 'price', 'category'**) y en un orden determinado
+   - **Descripción:** Permite ordenar la lista de productos por una columna específica (**id_product', 'name', 'description', 'price'**) y en un orden determinado
     (**'asc'** ordena ascendentemente y **'desc'** ordena descendientemente).
    - **Ejemplo:**
      - `/api/productos?producto=name&order=desc`  <--- Ordena por nombre descendientemente 
@@ -50,7 +50,7 @@
    - **Ruta:** `/api/productos/categoria/{categoria}`
    - **Parámetros:**
      - `categoria`: Nombre de la categoría para la cual se desean obtener los productos.
-   - **Descripción:** Permite obtener todos los productos asociados a una categoría específica. Actualmente existen las siguientes categorias(**procesadores**)
+   - **Descripción:** Permite obtener todos los productos asociados a una categoría específica. Actualmente existen las siguientes categorias(**procesadores**,**teclados**,**monitores**,**mouses**,**televicion**,**auriculares**,**consolas**)
    - **Ejemplo:**
        `/api/productos/categoria/procesadores`  Obtendremos todos los productos pertenecientes a la categoria procesadores. 
           
@@ -80,7 +80,7 @@
           "price": 150000,  
           "img": "img/6551a6d3b90b4.png",      
           "category": "procesadores"}
-         }
+          }
          
 
 #### 6. Modificar un producto existente

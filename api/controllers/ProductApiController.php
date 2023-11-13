@@ -43,78 +43,65 @@ class ProductApiController extends ApiController {
     }
 
     public function obtenerProductosPorCategoria($params = []) {
-        // if((UserHelper::checkSession())){
-            $category = $params[':CATEGORY'];
-            $products = $this->modelCategory->getProductsByCategory($category);
-            if(!empty($products)){
-                return $this->view->response($products, 200);
-            }else
-                $this->view->response("No existe la categoria con el nombre {$category}", 404);
-        // } else{
-        //     $this->view->response("No tienes los permisos para realizar esta accion. Inicia sesion en /start",403);
-        // }
+        $category = $params[':CATEGORY'];
+        $products = $this->modelCategory->getProductsByCategory($category);
+        if(!empty($products)){
+            return $this->view->response($products, 200);
+        }else {
+            $this->view->response("No existe la categoria con el nombre {$category}", 404);
+        }
     }
 
     public function agregarProducto() {
-        // if((UserHelper::checkSession())){
-            $product = null;  
-            $body =$this->getData();
-            var_dump($body);
-            if(!empty($body)){
-                if(isset($body->name) && isset($body->description) && isset($body->price) && isset($body->category) && isset($body->img)){
-                    $name = $body->name;
-                    $description = $body->description;
-                    $price = $body->price;
-                    $category = $body->category;
-                    $img = $body->img;
-                    $id_category_fk = $this->modelCategory->getCategoryByName($category);
-                    if($id_category_fk){
-                        $id = $this->model->insertProduct($name, $description,$price,$img, $id_category_fk);
-                        $product = $this->model->getProduct($id);
-                        $this->view->response($product, 201);
-                    }else{
-                        $this->view->response("No existe la categoria con el nombre {$category}", 404);
-                    }    
+        $product = null;  
+        $body =$this->getData();
+        if(!empty($body)){
+            if(isset($body->name) && isset($body->description) && isset($body->price) && isset($body->category) && isset($body->img)){
+                $name = $body->name;
+                $description = $body->description;
+                $price = $body->price;
+                $category = $body->category;
+                $img = $body->img;
+                $id_category_fk = $this->modelCategory->getCategoryByName($category);
+                if($id_category_fk){
+                    $id = $this->model->insertProduct($name, $description,$price,$img, $id_category_fk);
+                    $product = $this->model->getProduct($id);
+                    $this->view->response($product, 201);
                 }else{
-                    $this->view->response("El producto no fue creado porque faltan campos por completar.", 404);
-                }
+                    $this->view->response("No existe la categoria con el nombre {$category}", 404);
+                }    
+            }else{
+                $this->view->response("El producto no fue creado porque faltan campos por completar.", 404);
             }
-        // } else{
-        //     $this->view->response("No tienes los permisos para realizar esta accion. Inicia sesion en /start",403);
-        // }
+        }
     }
     
 
  
      public function modificarProducto($params = []) {
-        // if((UserHelper::checkSession())){
-            $id = $params[':ID'];
-            $product = $this->model->getProduct($id);
-            $body =$this->getData();
-            
-            if ($product && !empty($body)) {
-                if(isset($body->name) && isset($body->description) && isset($body->price) && isset($body->category) && isset($body->img)){
-                    $name = $body->name;
-                    $description = $body->description;
-                    $price = $body->price;
-                    $category = $body->category;
-                    $img = $body->img;
-                    $id_category_fk = $this->modelCategory->getCategoryByName($category);
-                    if($id_category_fk){
-                        $this->model->updateProduct($id, $name, $description,$price,$img, $id_category_fk);
-                        $this->view->response("Producto id= $id actualizada con éxito", 200);
-                    }else{
-                        $this->view->response("No existe la categoria con el nombre {$category}", 404);
-                    }
+        $id = $params[':ID'];
+        $product = $this->model->getProduct($id);
+        $body = $this->getData();
+        if ($product && !empty($body)) {
+            if(isset($body->name) && isset($body->description) && isset($body->price) && isset($body->category) && isset($body->img)){
+                $name = $body->name;
+                $description = $body->description;
+                $price = $body->price;
+                $category = $body->category;
+                $img = $body->img;
+                $id_category_fk = $this->modelCategory->getCategoryByName($category);
+                if($id_category_fk){
+                    $this->model->updateProduct($id, $name, $description,$price,$img, $id_category_fk);
+                    $this->view->response("Producto id= $id actualizada con éxito", 200);
                 }else{
-                    $this->view->response("El producto no fue actualizado porque faltan campos por completar.", 404);
+                    $this->view->response("No existe la categoria con el nombre $category", 404);
                 }
-            } else {
-                $this->view->response("Producto id= $id not found", 404);
+            }else{
+                $this->view->response("El producto no fue actualizado porque faltan campos por completar.", 404);
             }
-        // } else{
-        //     $this->view->response("No tienes los permisos para realizar esta accion. Inicia sesion en /start",403);
-        // }
+        } else {
+            $this->view->response("Producto id= $id not found", 404);
+        }
     }
 }
     

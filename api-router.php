@@ -10,8 +10,6 @@ define("URL_LOGIN", 'http://'.$_SERVER["SERVER_NAME"].':'.$_SERVER["SERVER_PORT"
 $router = new Router();
 
 // define la tabla de ruteo
-$router->addRoute('/start', 'GET', 'AuthApiController', 'showLogin');
-$router->addRoute('/login', 'POST', 'AuthApiController', 'login');
 $router->addRoute('/productos', 'GET', 'ProductApiController', 'obtenerProductos');
 $router->addRoute('/productos/:ID', 'GET', 'ProductApiController', 'obtenerProductos');
 $router->addRoute('/productos/:ID', 'PUT', 'ProductApiController', 'modificarProducto');
